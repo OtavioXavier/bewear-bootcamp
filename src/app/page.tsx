@@ -1,7 +1,9 @@
+import Header from "@/components/commom/header";
+
 export default function Home() {
   return (
-    <div>
-      Home Page
-    </div>
+    <>
+      <Header />
+    </>
   );
 }
