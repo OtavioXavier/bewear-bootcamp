@@ -7,6 +7,7 @@ import Header from "@/components/commom/header";
 import ProductsList from "@/components/commom/products-list";
 import { db } from "@/db";
 import { productTable } from "@/db/schema";
+import PartnerBrands from "@/components/commom/partner-brand-list";
 
 const Home = async () => {
   const products = await db.query.productTable.findMany({
@@ -36,7 +37,7 @@ const Home = async () => {
           sizes="100vw"
           className="h-auto w-full px-5"
         />
-
+        <PartnerBrands />
         <ProductsList title="Mais vendidos" products={products} />
         <CategorySelector categorys={categorys} />
 
