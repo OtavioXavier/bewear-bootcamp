@@ -17,7 +17,8 @@ const ProductItem = ({product, textContainerClassName}: ProductItemProps) => {
     const firstVariantPriceInCents = formatCentsToBRL(firstVariant.priceInCents);   
 
     return (
-        <Link href={"/"} className="flex flex-col gap-4">
+        <Link href={`/product-variant/${firstVariant.slug}`} className="flex flex-col gap-4">
+
             <Image 
             src={firstVariant.imageUrl} 
             alt={firstVariant.name} 
