@@ -4,10 +4,10 @@ import Image from "next/image";
 import CategorySelector from "@/components/commom/category-selector";
 import Footer from "@/components/commom/footer";
 import Header from "@/components/commom/header";
+import PartnerBrands from "@/components/commom/partner-brand-list";
 import ProductsList from "@/components/commom/products-list";
 import { db } from "@/db";
 import { productTable } from "@/db/schema";
-import PartnerBrands from "@/components/commom/partner-brand-list";
 
 const Home = async () => {
   const products = await db.query.productTable.findMany({
