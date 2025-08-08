@@ -1,11 +1,11 @@
 import { desc } from "drizzle-orm";
 import Image from "next/image";
 
-import CategorySelector from "@/components/commom/category-selector";
-import Footer from "@/components/commom/footer";
-import Header from "@/components/commom/header";
-import PartnerBrands from "@/components/commom/partner-brand-list";
-import ProductsList from "@/components/commom/products-list";
+import CategorySelector from "@/components/common/category-selector";
+import Footer from "@/components/common/footer";
+import Header from "@/components/common/header";
+import PartnerBrands from "@/components/common/partner-brand-list";
+import ProductsList from "@/components/common/products-list";
 import { db } from "@/db";
 import { productTable } from "@/db/schema";
 
@@ -23,7 +23,7 @@ const Home = async () => {
     }
   })
 
-  const categorys = await db.query.categoryTable.findMany({});
+  const categoryList = await db.query.categoryTable.findMany({});
 
   return (
     <>
@@ -39,11 +39,11 @@ const Home = async () => {
         />
         <PartnerBrands />
         <ProductsList title="Mais vendidos" products={products} />
-        <CategorySelector categorys={categorys} />
+        <CategorySelector categoryList={categoryList} />
 
         <Image
           src={"/banner-02.png"}
-          alt="Seja Auténtico"
+          alt="Seja Autentico"
           width={0}
           height={0}
           sizes="100vw"
