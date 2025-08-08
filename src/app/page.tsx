@@ -14,14 +14,14 @@ const Home = async () => {
   return (
     <>
       <Header />
-      <div className="px-5 space-y-6">
+      <div className="space-y-6">
         <Image
           src={"/banner-01.png"}
           alt="Leve uma vida com estilo"
           width={0}
           height={0}
           sizes="100vw"
-          className="h-auto w-full"
+          className="h-auto w-full px-5"
         />
 
         <ProductsList title="Mais vendidos" products={products}/>
@@ -32,7 +32,7 @@ const Home = async () => {
           width={0}
           height={0}
           sizes="100vw"
-          className="h-auto w-full"
+          className="h-auto w-full px-5"
         />
       </div>
     </>
