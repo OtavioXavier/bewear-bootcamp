@@ -28,6 +28,15 @@ const Cart = () => {
                 <SheetHeader>
                     <SheetTitle>Meu carrinho</SheetTitle>
                 </SheetHeader>
+                {cart?.items.length === 0 ? (
+                    <div className="w-full h-full flex justify-center items-center flex-col gap-2">
+                        <div className="bg-purple-200 w-36 h-36 rounded-full flex items-center justify-center text-purple-400">
+                            <ShoppingCart className="w-12 h-12" />
+                        </div>
+                            <p className=" font-bold">Seu carrinho está vazio</p>
+                    </div>
+                )
+                    :
                     <div className="flex h-full flex-col px-5 pb-5">
                         <div className="flex h-full max-h-full flex-col overflow-hidden">
                             <ScrollArea className="h-full">
@@ -49,17 +58,17 @@ const Cart = () => {
                             <div className="flex flex-col gap-4">
                                 <Separator />
                                 <div className="flex items-center justify-between text-xs font-medium">
-                                    <p className="text-xs font-bold">Subtotal</p>  
+                                    <p className="text-xs font-bold">Subtotal</p>
                                     <p>{formatCentsToBRL(cart?.totalPriceInCents ?? 0)}</p>
                                 </div>
                                 <Separator />
                                 <div className="flex items-center justify-between text-xs font-medium">
-                                    <p className="text-xs font-bold">Entrega</p>  
+                                    <p className="text-xs font-bold">Entrega</p>
                                     <p>GRÁTIS</p>
                                 </div>
                                 <Separator />
                                 <div className="flex items-center justify-between text-xs font-medium">
-                                    <p className="text-xs font-bold">Total</p>  
+                                    <p className="text-xs font-bold">Total</p>
                                     <p>{formatCentsToBRL(cart?.totalPriceInCents ?? 0)}</p>
                                 </div>
 
@@ -68,6 +77,8 @@ const Cart = () => {
 
                         )}
                     </div>
+                }
+
             </SheetContent>
         </Sheet>
     );

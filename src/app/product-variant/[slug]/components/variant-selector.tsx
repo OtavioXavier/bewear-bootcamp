@@ -18,7 +18,7 @@ const VariantSelector = ({ productVariant, selectedVariantSlug }: VariantSelecto
                 href={`/product-variant/${variant.slug}`} 
                 key={variant.id} 
                 className={clsx(selectedVariantSlug === variant.slug ?
-                    'opacity-100'
+                    'opacity-100 border-2 border-primary rounded-xl'
                     :
                     'opacity-40',
                     'cursor-pointer transition-all ease-in-out duration-300 hover:opacity-100'

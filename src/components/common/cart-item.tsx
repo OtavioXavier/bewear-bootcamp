@@ -1,6 +1,10 @@
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { Minus, Plus, Trash } from "lucide-react";
 import Image from "next/image";
 import { useState } from "react";
+import { toast } from "sonner";
+
+import { removeProductFromCart } from "@/actions/remove-cart-product";
 
 import { Button } from "../ui/button";
 
@@ -16,6 +20,30 @@ interface CartItemProps {
 
 const CartItem = ({ id, productName, productVariantName, productVariantImageUrl, productVariantPriceInCents, quantity: initialQuantity }: CartItemProps) => {
     const [quantity, setQuantity] = useState(initialQuantity);
+    const queryClient = useQueryClient();
+
+    const {mutate} = useMutation({
+        mutationKey: ["remove-cart-product"],
+        mutationFn: () => removeProductFromCart({cartItemId: id}),
+        onSuccess: () => {
+            queryClient.invalidateQueries({
+                queryKey: ["cart"],
+            });
+        }
+
+    });
+
+    const handleDelete = () => {
+        mutate(undefined, {
+            onSuccess: () => {
+                toast.success("Produto removido do carrinho");
+            },
+            onError: (error) => {
+                toast.error(error.message);
+            }
+
+        });
+    }
 
     const handleDecrement = () => {
         setQuantity(prev => prev > 1 ? prev - 1 : 1);
@@ -51,7 +79,8 @@ const CartItem = ({ id, productName, productVariantName, productVariantImageUrl,
                 </div>
             </div>
             <div className="flex flex-col justify-center items-end gap-4">
-                <Button variant={"outline"} size={"icon"}>
+                <Button variant={"outline"} size={"icon"} onClick={handleDelete}>
+
                     <Trash />
                 </Button>
                 <p className="text-sm font-bold">R$ {productVariantPriceInCents / 100}</p>
