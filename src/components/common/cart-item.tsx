@@ -1,13 +1,12 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { Minus, Plus, Trash } from "lucide-react";
 import Image from "next/image";
-import { useState } from "react";
 import { toast } from "sonner";
 
+import { decreaseProductToCart } from "@/actions/decrease-cart-product";
 import { removeProductFromCart } from "@/actions/remove-cart-product";
 
 import { Button } from "../ui/button";
-
 
 interface CartItemProps {
     id: string;
@@ -18,11 +17,10 @@ interface CartItemProps {
     quantity: number;
 }
 
-const CartItem = ({ id, productName, productVariantName, productVariantImageUrl, productVariantPriceInCents, quantity: initialQuantity }: CartItemProps) => {
-    const [quantity, setQuantity] = useState(initialQuantity);
+const CartItem = ({ id, productName, productVariantName, productVariantImageUrl, productVariantPriceInCents, quantity }: CartItemProps) => {
     const queryClient = useQueryClient();
 
-    const {mutate} = useMutation({
+    const handleDeleteMutation = useMutation({
         mutationKey: ["remove-cart-product"],
         mutationFn: () => removeProductFromCart({cartItemId: id}),
         onSuccess: () => {
@@ -30,11 +28,20 @@ const CartItem = ({ id, productName, productVariantName, productVariantImageUrl,
                 queryKey: ["cart"],
             });
         }
+    });
 
+    const handleDecreaseMutation = useMutation({
+        mutationKey: ["decrease-cart-product"],
+        mutationFn: () => decreaseProductToCart({cartItemId: id}),
+        onSuccess: () => {
+            queryClient.invalidateQueries({
+                queryKey: ["cart"],
+            });
+        }
     });
 
     const handleDelete = () => {
-        mutate(undefined, {
+        handleDeleteMutation.mutate(undefined, {
             onSuccess: () => {
                 toast.success("Produto removido do carrinho");
             },
@@ -46,11 +53,11 @@ const CartItem = ({ id, productName, productVariantName, productVariantImageUrl,
     }
 
     const handleDecrement = () => {
-        setQuantity(prev => prev > 1 ? prev - 1 : 1);
+        handleDecreaseMutation.mutate()
     }
 
     const handleIncrement = () => {
-        setQuantity(prev => prev + 1);
+        // setQuantity(prev => prev + 1);
     }
     return (
         <div className="flex items-center justify-between">
