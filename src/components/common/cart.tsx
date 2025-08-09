@@ -4,10 +4,10 @@ import { useQuery } from "@tanstack/react-query";
 import { ShoppingCart } from "lucide-react";
 
 import { getCart } from "@/actions/get-cart";
-import { formatCentsToBRL } from "@/helpers/money";
 
 import { Button } from "../ui/button";
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "../ui/sheet";
+import CartItem from "./cart-item";
 
 const Cart = () => {
     const { data: cart, isPending: cartIsLoading } = useQuery({
@@ -28,11 +28,15 @@ const Cart = () => {
                 <div>
                     {cartIsLoading && <p>Carregando carrinho...</p>}
                     {cart?.items.map((item) => (
-                        <div key={item.id}>
-                            <p>{item.productVariant.product.name}</p>
-                            <p>{formatCentsToBRL(item.productVariant.priceInCents)}</p>
-                            <p>{item.quantity}</p>
-                        </div>
+                        <CartItem key={item.id} 
+                        id={item.id} 
+                        productName={item.productVariant.product.name} 
+                        productVariantName={item.productVariant.name} 
+                        productVariantImageUrl={item.productVariant.imageUrl} 
+                        productVariantPriceInCents={item.productVariant.priceInCents} 
+                        quantity={item.quantity} 
+                        />
+
                     ))}
                 </div>
             </SheetContent>
