@@ -3,6 +3,7 @@ import { Minus, Plus, Trash } from "lucide-react";
 import Image from "next/image";
 import { toast } from "sonner";
 
+import { addProductToCart } from "@/actions/add-cart-product";
 import { decreaseProductToCart } from "@/actions/decrease-cart-product";
 import { removeProductFromCart } from "@/actions/remove-cart-product";
 
@@ -11,13 +12,14 @@ import { Button } from "../ui/button";
 interface CartItemProps {
     id: string;
     productName: string;
+    productVariantId: string;
+
     productVariantName: string;
     productVariantImageUrl: string;
     productVariantPriceInCents: number;
     quantity: number;
 }
-
-const CartItem = ({ id, productName, productVariantName, productVariantImageUrl, productVariantPriceInCents, quantity }: CartItemProps) => {
+const CartItem = ({ id, productName, productVariantId, productVariantName, productVariantImageUrl, productVariantPriceInCents, quantity }: CartItemProps) => {
     const queryClient = useQueryClient();
 
     const handleDeleteMutation = useMutation({
@@ -33,6 +35,16 @@ const CartItem = ({ id, productName, productVariantName, productVariantImageUrl,
     const handleDecreaseMutation = useMutation({
         mutationKey: ["decrease-cart-product"],
         mutationFn: () => decreaseProductToCart({cartItemId: id}),
+        onSuccess: () => {
+            queryClient.invalidateQueries({
+                queryKey: ["cart"],
+            });
+        }
+    });
+
+    const handleIncreaseMutation = useMutation({
+        mutationKey: ["increase-cart-product"],
+        mutationFn: () => addProductToCart({productVariantId: productVariantId, quantity: 1}),
         onSuccess: () => {
             queryClient.invalidateQueries({
                 queryKey: ["cart"],
@@ -57,7 +69,8 @@ const CartItem = ({ id, productName, productVariantName, productVariantImageUrl,
     }
 
     const handleIncrement = () => {
-        // setQuantity(prev => prev + 1);
+        handleIncreaseMutation.mutate()
+
     }
     return (
         <div className="flex items-center justify-between">
