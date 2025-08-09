@@ -1,11 +1,10 @@
-import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { Minus, Plus, Trash } from "lucide-react";
 import Image from "next/image";
 import { toast } from "sonner";
 
-import { addProductToCart } from "@/actions/add-cart-product";
-import { decreaseProductToCart } from "@/actions/decrease-cart-product";
-import { removeProductFromCart } from "@/actions/remove-cart-product";
+import { useDecreaseCartProductMutation } from "@/hooks/queries/mutations/use-decrease-cart-product";
+import { useIncreaseCartProductMutation } from "@/hooks/queries/mutations/use-increase-cart-product";
+import { useRemoveProductFromCart } from "@/hooks/queries/mutations/use-remove-product-from-cart";
 
 import { Button } from "../ui/button";
 
@@ -20,37 +19,12 @@ interface CartItemProps {
     quantity: number;
 }
 const CartItem = ({ id, productName, productVariantId, productVariantName, productVariantImageUrl, productVariantPriceInCents, quantity }: CartItemProps) => {
-    const queryClient = useQueryClient();
 
-    const handleDeleteMutation = useMutation({
-        mutationKey: ["remove-cart-product"],
-        mutationFn: () => removeProductFromCart({cartItemId: id}),
-        onSuccess: () => {
-            queryClient.invalidateQueries({
-                queryKey: ["cart"],
-            });
-        }
-    });
+    const handleDeleteMutation = useRemoveProductFromCart(id);
 
-    const handleDecreaseMutation = useMutation({
-        mutationKey: ["decrease-cart-product"],
-        mutationFn: () => decreaseProductToCart({cartItemId: id}),
-        onSuccess: () => {
-            queryClient.invalidateQueries({
-                queryKey: ["cart"],
-            });
-        }
-    });
+    const handleDecreaseMutation = useDecreaseCartProductMutation(id);
 
-    const handleIncreaseMutation = useMutation({
-        mutationKey: ["increase-cart-product"],
-        mutationFn: () => addProductToCart({productVariantId: productVariantId, quantity: 1}),
-        onSuccess: () => {
-            queryClient.invalidateQueries({
-                queryKey: ["cart"],
-            });
-        }
-    });
+    const handleIncreaseMutation = useIncreaseCartProductMutation(productVariantId);
 
     const handleDelete = () => {
         handleDeleteMutation.mutate(undefined, {
@@ -70,7 +44,6 @@ const CartItem = ({ id, productName, productVariantId, productVariantName, produ
 
     const handleIncrement = () => {
         handleIncreaseMutation.mutate()
-
     }
     return (
         <div className="flex items-center justify-between">
