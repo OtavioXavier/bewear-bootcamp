@@ -14,5 +14,11 @@
     "source.fixAll.eslint": "explicit",
     "source.organizeImports": "explicit",
     "source.sortMembers": "explicit"
-  }
+  },
+  "cSpell.words": [
+    "Carregando",
+    "carrinho",
+    "sonner"
+  ],
+  "cSpell.language": "en,pt,pt-BR"
 }

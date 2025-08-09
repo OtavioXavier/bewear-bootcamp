@@ -1,17 +1,15 @@
 import { eq } from "drizzle-orm";
-import { ShoppingCart } from "lucide-react";
 import Image from "next/image";
 import { notFound } from "next/navigation";
 
 import Footer from "@/components/common/footer";
 import Header from "@/components/common/header";
 import ProductsList from "@/components/common/products-list";
-import { Button } from "@/components/ui/button";
 import { db } from "@/db";
 import { productTable, productVariantTable } from "@/db/schema";
 import { formatCentsToBRL } from "@/helpers/money";
 
-import QuantitySelector from "./components/quantity-selector";
+import ProductActions from "./components/product-actions";
 import VariantSelector from "./components/variant-selector";
 
 interface ProductVariantPageProps {
@@ -69,15 +67,8 @@ const ProductVariantPage = async ({ params }: ProductVariantPageProps) => {
                         {formatCentsToBRL(productVariant.priceInCents)}
                     </h4>
                 </div>
-                <div className="px-5">
-                    {/* Quantidade */}
-                    <QuantitySelector />
 
-                </div>
-                <div className="px-5 flex flex-col space-y-2">
-                    <Button className="rounded-full" size={"lg"}>Comprar agora</Button>
-                    <Button variant="outline" className="rounded-full" size={"lg"}>Adicionar ao carrinho <ShoppingCart /></Button>
-                </div>
+                <ProductActions productVariantId={productVariant.id} />
                 <div className="px-5">
                     <p className="text-shadow-amber-600 text-sm">{productVariant.product.description}</p>
                 </div>
